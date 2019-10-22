@@ -36,6 +36,10 @@ public class Swarm
     private Statistics stats;
 
     private Particle[] particles;
+    
+    private Particle bestSoFar;
+    
+    private int bestSoFarIndex;
 
     private final static Logger logger = LogManager.getLogger(Swarm.class);
 
@@ -52,6 +56,8 @@ public class Swarm
         this.neighborhoodTopology = neighborhoodTopology;
         this.particles = new Particle[numberOfParticles];
         this.stats = null;
+        this.bestSoFar = null;
+        this.bestSoFarIndex = -1;
     }
 
     /**
@@ -100,6 +106,7 @@ public class Swarm
     {
         return this.mover;
     }
+    
 
     /**
      * Initializes the particles in the swarm.  Randomly sets initial position and evaluates fitness of that position.
@@ -235,9 +242,30 @@ public class Swarm
             }
         }
 
-        return particles[best_index].getBestState();
+        this.bestSoFar = particles[best_index];
+        this.bestSoFarIndex = best_index;
+        
+        return bestSoFar.getBestState();
     }
 
+    /**
+     * Returns the index of the particle with the best state so far
+     * @return best particle so far
+     */
+    public int getBestSoFarIndex()
+    {
+        return this.bestSoFarIndex;
+    }
+    
+    /**
+     * Returns the Statistics object for this swarm
+     * @return stats
+     */
+    public Statistics getStats()
+    {
+        return this.stats;
+    }
+    
     /**
      * Returns the evaluator for the Swarm.
      * @return the evaluator.
